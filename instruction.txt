@@ -1,0 +1,84 @@
+First open the fabric directory.
+ and inside open the first-network directory.
+
+
+Execute these commands in sequence.
+
+
+./byfn.sh up -s couchdb
+ this will start the network.
+
+
+docker exec cli peer chaincode install -n election -l node -p /opt/gopath/src/github.com/chaincode/election -v 0.1
+to install chaincode on peer1
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" -e "CORE_PEER_ADDRESS=peer1.org1.example.com:8051" cli peer chaincode install -n election -l node -p /opt/gopath/src/github.com/chaincode/election -v 0.1
+
+To install on peer2
+
+export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+Envoirment variable
+
+
+ docker exec cli peer chaincode instantiate -o orderer.example.com:7050 --cafile $ORDERER_CA -C mychannel -c '{"Args":[]}' -n election -v 0.1 -P "OR('Org1MSP.member')"
+To instantiate Chaincode
+
+Whenevr you want to switch off your system please close the network by these commands:
+
+./byfn.sh down
+
+docker rm $(docker ps -a -q) --force
+
+docker volume prune
+
+docker network rm net_byfn
+
+
+
+
+
+
+
+
+
+Now Move to node Sdk:
+There is a directory hfc-key-store inside both adminsitrator and voter directory. always make it empty when you restart network. I mean if you have down the network or your system was shut.
+During upgrades you dont need to delete the files inside.
+
+
+
+
+now in node sdk Administrator.
+
+node enrollAdmin.js
+node registerAdministrator.js
+node app.js
+
+
+Peer Admin is active with the apis.
+
+
+Now in nodesdk voter:
+
+node enrollAdmin.js
+node registerVoter.js
+node app.js
+
+
+Now in gui Administrator open index.html
+Now in gui Voter open voterPanel.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+

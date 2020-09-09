@@ -1,0 +1,19 @@
+
+
+Inside The Project directory there is a fabric directory there is first network directory.
+All the other directories are required binaries for fabric.
+
+Now open First network directory.
+It is the same first network from the one that is present in fabric Samples But I have Modified it.
+
+In First Network these are all docker files for docker to know how and what containers to create.
+
+In base directory the file present show the peer configuration the orderer and ca.
+
+there are two files in the first network cypto-config.yaml and configtx in which it is defined how many organizations are there in the network how many peers per orgs are there.
+
+byfn.sh is a script file which runs all the other files.
+
+docker-compose-couch.yaml file is for couchdb instances and similarly rest of the files server other purposes.like kafka multiple orgs etc.  
+
+

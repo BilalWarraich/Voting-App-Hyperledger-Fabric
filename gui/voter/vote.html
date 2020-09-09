@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Evote</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css">
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>	 				
+							
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+				<a href="index.html">
+						<button class="btn btn-success">
+							<span>
+								<i class="fa fa-long-arrow-left m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</a>
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Add Candidates
+				</span>
+				<div class="wrap-input100 validate-input bg1" >
+					<span class="label-input100">ID *</span>
+					<input class="input-ID" type="text" name="ID" id="id" placeholder="ID" readonly>
+				</div>
+
+				<div class="wrap-input100 validate-input bg1" >
+					<span class="label-input100">Candidate Name *</span>
+					<input class="input100" type="text" name="candidateName" id="name" placeholder="Candidate Name" readonly>
+				</div>
+
+				<div class="wrap-input100 validate-input bg1" >
+					<span class="label-input100">Contact * </span>
+					<input class="input100" type="text" name="contact" id="contacts" placeholder="Contact " readonly>
+				</div>
+
+				<div class="wrap-input100 validate-input bg1" >
+					<span class="label-input100">Address *</span>
+					<input class="input100" type="text" name="address" id="addr" placeholder="Address" readonly>
+				</div>
+
+				<div>
+					<input id="inp" type='file' hidden>
+					<p hidden id="b64" hidden></p>
+					<img id="img" height="150">
+				</div>
+
+
+
+			</form>
+		</div>
+	</div>
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="vendor/select2/select2.min.js"></script>
+	<script src="scripts/jquery.min.js"></script>    
+    <script src="scripts/vendor.js"></script> 
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+	<script src="vendor/noui/nouislider.min.js"></script>
+	<script src="js/main.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+
+<script>if (window.module) module = window.module;</script>
+<script>
+    
+var addressFromLink = '';
+var addressFromLink1 = '';
+
+var b64 = '';	
+	
+$(document).ready(function () {	
+	addressFromLink = getQueryVariable("Request_ID");
+
+	var a = document.getElementById("b64").innerHTML;
+	console.log(a);
+	var Request_ID = addressFromLink;
+	
+	$.ajax({
+            type: "GET",
+			url: 'http://localhost:8000/api/getCandidateByID?candidateID='+Request_ID+'',
+           cache: false,
+         complete: function (data, status) {
+           if (status === 'error' || !data.responseText||data.responseJSON == '') {
+             alert(data.responseText+"Error");
+           }
+           else {
+			   console.log(data.responseJSON)
+			var candidateID = document.getElementById('id');
+			candidateID.value = Request_ID;
+			
+			var candidateName = document.getElementById('name');
+			candidateName.value = data.responseJSON.candidateName;
+
+			var contact = document.getElementById('contacts');
+			contact.value = data.responseJSON.contact;
+
+			var addr = document.getElementById('addr');
+			addr.value = data.responseJSON.address;
+
+            var votes = data.responseJSON.votes;
+
+			var image = document.getElementById('img');
+			image.src = data.responseJSON.image;
+            image.onclick = addVote(votes);
+             
+           }
+         }
+       });
+		
+	
+});
+
+function addVote(variable)
+            {  
+
+        addressFromLink = getQueryVariable("Request_ID");
+        addressFromLink1 = getQueryVariable("voterID");
+        var voterID = addressFromLink1;
+        var candidateID = addressFromLink;
+        console.log(variable);
+        $.ajax({
+            type: "POST",
+			url: "http://localhost:8001/api/updateCandidate",
+            data: {
+			 
+            "candidateID" : candidateID,
+
+            "votes" : parseInt(variable) + 1,
+
+             
+			
+			
+           },
+           cache: false,
+         complete: function (data, status) {
+           if (status === 'error' || !data.responseText) {
+             alert(data.responseText);
+           }
+           else {
+             console.log(parseInt(variable) + 1)  
+             console.log("Vote  Added");
+             alert("Vote Added");
+
+             $.ajax({
+            type: "POST",
+			url: "http://localhost:8001/api/updateVoterStatus",
+            data: {
+			 
+            "voterID" : voterID ,
+
+            "status" : "Voted",
+
+             
+			
+			
+           },
+           cache: false,
+         complete: function (data, status) {
+           if (status === 'error' || !data.responseText) {
+             alert(data.responseText);
+           }
+           else {
+            window.location.href = "voter_login.html";
+
+
+
+             
+           }
+         }
+       });
+             
+           }
+         }
+       });
+  
+
+      } 
+	
+
+
+function getQueryVariable(variable)
+            {   
+              var query = window.location.search.substring(1);
+              var vars = query.split("&");
+              for (var i=0;i<vars.length;i++) 
+              {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable)
+                {
+                  return pair[1];
+              }
+          }
+          return(false);
+      }
+	  function readFile() {
+  
+  if (this.files && this.files[0]) {
+    
+    var FR= new FileReader();
+    
+    FR.addEventListener("load", function(e) {
+      document.getElementById("img").src       = e.target.result;
+      document.getElementById("b64").innerHTML = e.target.result;
+    }); 
+    
+    FR.readAsDataURL( this.files[0] );
+  }
+  
+}
+
+      document.getElementById("inp").addEventListener("change", readFile);
+ </script>
+ <script>if (window.module) module = window.module;</script>
+</body>
+</html>

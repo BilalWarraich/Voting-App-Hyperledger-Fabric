@@ -1,0 +1,20 @@
+{
+	"name": "election",
+	"version": "1.0.1",
+	"description": "testGreenSecure chaincode implemented in node.js",
+	"engines": {
+		"node": ">=8.4.0",
+		"npm": ">=5.3.0"
+	},
+	"scripts": {
+		"start": "node election.js",
+		"test": "nyc mocha test"
+	},
+	"engine-strict": true,
+	"license": "Apache-2.0",
+	"dependencies": {
+		"fabric-contract-api": "^2.0.0",
+		"fabric-shim": "^2.0.0",
+		"printj": "^1.2.2"
+	}
+}

@@ -1,0 +1,18 @@
+
+
+Inside The Project directory there is a fabric directory and in there is chaincode directory open that directory.
+ In there Open the agri directory
+
+there will be file called agri.go which is the chaincode written in go lang.
+
+OPen IT:
+
+At Start we import all the binaries needed for the go lang chaincode to interact with the Hyperledger network.
+
+the last two are important the shim api is for the communication of data between network and the chaincode while peer import is for communications with peers
+
+Moving On
+
+There Are Structs
+Each Struct Defines The Actors Or Entites of the Chaincodes Consider them as Definig how your blockchain datebase is going to look. for example you will have table Expert and these will be the feilds inside .
+
