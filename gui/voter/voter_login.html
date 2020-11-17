@@ -92,7 +92,7 @@ $(document).on('click', '#submit', function (evt) {
            }
            else {
 			if(data.responseJSON[0].Record.status == 'Voted'){
-				alert("You Have Already Voted")
+				window.location.href = "result.html?voterID="+voterID+"";
 			}
 			else{
 			 var voterID = data.responseJSON[0].Key;

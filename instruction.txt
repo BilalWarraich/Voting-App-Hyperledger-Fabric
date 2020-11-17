@@ -26,14 +26,15 @@ To instantiate Chaincode
 
 Whenevr you want to switch off your system please close the network by these commands:
 
-./byfn.sh down
+****************************************************************************************
+./BYFN.SH DOWN
 
-docker rm $(docker ps -a -q) --force
+DOCKER RM $(DOCKER PS -A -Q) --FORCE
 
-docker volume prune
+DOCKER VOLUME PRUNE
 
-docker network rm net_byfn
-
+DOCKER NETWORK RM NET_BYFN
+****************************************************************************************
 
 
 

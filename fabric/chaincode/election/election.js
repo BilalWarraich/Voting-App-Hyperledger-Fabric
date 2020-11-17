@@ -195,6 +195,24 @@ let Chaincode = class {
 
   }
 
+  async queryResult(stub, args, thisClass) {
+    //   0
+    // 'queryString'
+    if (args.length < 1) {
+      throw new Error('Incorrect number of arguments. Expecting queryString');
+    }
+
+    let status= args[0];
+    let queryString = printj.sprintf("{\"selector\":{\"docType\":\"candidate\",\"status\":{\"$ne\":\"%s\"}}}", status);
+    if (!queryString) {
+      throw new Error('queryString must not be empty');
+    }
+    let method = thisClass['getQueryResultForQueryString'];
+    let queryResults = await method(stub, queryString, thisClass);
+
+    return queryResults;
+  }
+
   async queryVoter(stub, args, thisClass) {
     //   0
     // 'queryString'

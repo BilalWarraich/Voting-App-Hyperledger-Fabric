@@ -25,16 +25,6 @@
                    Evote Voter Panel
                 </span>
                 
-                <a href="" class="container-contact100-form-btn">
-                    <button class="contact100-form-btn" id="advice">
-                        <span>
-                            List Of Candidates
-                            <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
-						</span>
-						
-					</button>
-					
-				</a>
 				<a href="" class="container-contact100-form-btn">
                     <button class="contact100-form-btn" id="result">
                         <span>
@@ -73,12 +63,6 @@ $(document).ready(function () {
     
 
 
-});
-
-$(document).on('click', '#advice', function (evt) {
-	evt.preventDefault();
-	var voterID =addressFromLink;
-	window.location.href = "candidates.html?voterID="+voterID+"";
 });
 
 $(document).on('click', '#result', function (evt) {

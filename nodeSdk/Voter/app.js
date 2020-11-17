@@ -181,3 +181,21 @@ app.get('/api/queryCandidateByStatus', async function (req, res) {
   }
 });
 
+app.get('/api/queryResult', async function (req, res) {
+
+  const request = {
+    chaincodeId: 'election',
+    fcn: 'queryResult',
+    args: [
+      req.query.status
+    ]
+  };
+  let response = await query.invokeQuery(request)
+  if (response) {
+    if(response.status == 200)
+      res.status(response.status).send(JSON.parse(response.message));
+    else
+      res.status(response.status).send({ message: response.message });
+  }
+});
+
